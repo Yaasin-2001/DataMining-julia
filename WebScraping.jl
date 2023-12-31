@@ -105,41 +105,41 @@ end
 url = "https://tr.wikipedia.org/wiki/Türk_dizileri_listesi"
 turk_diziler = scrape_turk_diziler_info(url)
 
-Director = String[]
-Leading_Role = String[]
-Kind = String[]
-Show_Time = String[]
-Publishing_Time = String[]
-Production_Company = String[]
-Scriptwriter = String[]
-Producer = String[]
+Yonetmen = String[]
+Basrol = String[]
+Tur = String[]
+Gosterim_suresi = String[]
+Yayin_tarihi = String[]
+Yapim_sirketi = String[]
+Senarist = String[]
+Yapimci = String[]
 Format = String[]
-Bölüm_Sayısı = String[]
+Bolum_Sayisi = String[]
 
 for link in linkler
     if startswith(link, "https")
         yönetmen, başrol, tür, gösterim_süresi, yayın_tarihi, yapım_şirketi, senarist, yapımcı, format, bölüm_sayısı = scrape_individual_page(link)
-        push!(Director, yönetmen)
-        push!(Leading_Role, başrol)
-        push!(Kind, tür)
-        push!(Show_Time, gösterim_süresi)
-        push!(Publishing_Time, yayın_tarihi)
-        push!(Production_Company, yapım_şirketi)
-        push!(Scriptwriter, senarist)
-        push!(Producer, yapımcı)
+        push!(Yonetmen, yönetmen)
+        push!(Basrol, başrol)
+        push!(Tur, tür)
+        push!(Gosterim_suresi, gösterim_süresi)
+        push!(Yayin_tarihi, yayın_tarihi)
+        push!(Yapim_sirketi, yapım_şirketi)
+        push!(Senarist, senarist)
+        push!(Yapimci, yapımcı)
         push!(Format, format)
-        push!(Bölüm_Sayısı, bölüm_sayısı)
+        push!(Bolum_Sayisi, bölüm_sayısı)
     else
-        push!(Director, "")
-        push!(Leading_Role, "")
-        push!(Kind, "")
-        push!(Show_Time, "")
-        push!(Publishing_Time, "")
-        push!(Production_Company, "")
-        push!(Scriptwriter, "")
-        push!(Producer, "")
+        push!(Yonetmen, "")
+        push!(Basrol, "")
+        push!(Tur, "")
+        push!(Gosterim_suresi, "")
+        push!(Yayin_tarihi, "")
+        push!(Yapim_sirketi, "")
+        push!(Senarist, "")
+        push!(Yapimci, "")
         push!(Format, "")
-        push!(Bölüm_Sayısı, "")
+        push!(Bolum_Sayisi, "")
     end
 end
 
@@ -150,16 +150,16 @@ turk_diziler_df = DataFrame(
     SezonSayisi = turk_diziler.sezon_sayisi,
     Durum = turk_diziler.durum,
     Kanal = turk_diziler.kanal,
-    Director = Director,
-    LeadingRole = Leading_Role,
-    Kind = Kind,
-    Show_Time = Show_Time,
-    Publishing_Time = Publishing_Time,
-    Production_Company = Production_Company,
-    Scriptwriter = Scriptwriter,
-    Producer = Producer,
+    Yonetmen = Yonetmen,
+    Basrol = Basrol,
+    Tur = Tur,
+    Gosterim_suresi = Gosterim_suresi,
+    Yayin_tarihi = Yayin_tarihi,
+    Yapim_sirketi = Yapim_sirketi,
+    Senarist = Senarist,
+    Yapimci = Yapimci,
     Format = Format,
-    Bölüm_Sayısı = Bölüm_Sayısı
+    Bolum_Sayisi = Bolum_Sayisi
 )
     
     Dizinin_isminin_uzunluğu =  Int64[]
@@ -189,35 +189,35 @@ turk_diziler_df = DataFrame(
          push!(Dizinin_isminin_uzunluğu, length(i))
     end
     
-    for i in Kind
+    for i in Tur
         if occursin("Romantik", i)
             push!(Romantik, 1)
         else
             push!(Romantik, 0)
         end
    end
-    for i in Kind
+    for i in Tur
         if occursin("Dram", i)
             push!(Dram, 1)
         else
             push!(Dram, 0)
         end
    end
-   for i in Kind
+   for i in Tur
         if occursin("Gençlik", i)
             push!(Gençlik, 1)
         else
             push!(Gençlik, 0)
         end
     end
-    for i in Kind
+    for i in Tur
         if occursin("Komedi", i)
             push!(Komedi, 1)
         else
             push!(Komedi, 0)
         end
     end
-    for i in Kind
+    for i in Tur
         if occursin("Macera", i)
             push!(Macera, 1)
         else
@@ -309,19 +309,19 @@ turk_diziler_df = DataFrame(
         push!(Sezon_Sayısı, convert_to_int(i))
     end
     
-    for i in Show_Time
+    for i in Gosterim_suresi
         push!(Bölüm_Süresi, convert_to_int(i))
     end
-    for i in Bölüm_Sayısı
+    for i in Bolum_Sayisi
         push!(Toplam_Bölüm_Sayısı, convert_to_int(i))
     end
     
-    for i in 1:length(Bölüm_Sayısı)
+    for i in 1:length(Bolum_Sayisi)
         k = round(Toplam_Bölüm_Sayısı[i] / Sezon_Sayısı[i])
         push!(Sezon_Başına_Bölüm, k)    
     end
 
-    for i in Publishing_Time
+    for i in Yayin_tarihi
         # Veriyi boşluğa göre ayır
         parçalar = split(i, " ")
         if startswith(i, "1.")
@@ -367,4 +367,4 @@ train_members_df = DataFrame(
     Sezon_Sayısı = Sezon_Sayısı
 )
 
-CSV.write("2024.csv", train_members_df)
+CSV.write("2024_yilin_diziler.csv", train_members_df)

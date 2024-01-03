@@ -367,4 +367,4 @@ train_members_df = DataFrame(
     Sezon_Sayısı = Sezon_Sayısı
 )
 
-CSV.write("2024_yilin_diziler.csv", train_members_df)
+CSV.write("dizi_verileri/2024_yilin_diziler.csv", train_members_df)

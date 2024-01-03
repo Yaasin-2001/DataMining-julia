@@ -42,3 +42,5 @@ total_predictions = length(test_target)
 accuracy = correct_predictions / total_predictions
 
 println("Accuracy: ", accuracy)
+
+# Test
